@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useApiKey } from "../../context/apikey.context";
 import { useLoading } from "../../context/loading.contect";
 import { useMatch } from "../../context/matches.context";
 import { useNextMatches } from "../../context/nextMatches.context";
@@ -11,14 +12,17 @@ const SelectTeam = () => {
   const { setLoading } = useLoading();
   const { setMatch } = useMatch();
   const { setNextMatches } = useNextMatches();
+  const {apiKey} = useApiKey();
 
   const handleTeamName = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== "Enter") return;
 
+    setTeam(undefined);
+
     const input = (e.target as HTMLInputElement).value.toLowerCase();
 
     setLoading(true);
-    const matches = await getMatches();
+    const matches = await getMatches(apiKey);
     setLoading(false);
 
     const rounds = matches.data.partidas["fase-unica"];
@@ -50,7 +54,7 @@ const SelectTeam = () => {
     }
 
     setLoading(true);
-    const team = await getTeamById(foundTeamId);
+    const team = await getTeamById(foundTeamId, apiKey);
     setTeam(team);
     setLoading(false);
 
@@ -89,13 +93,13 @@ const SelectTeam = () => {
     // Carrega os detalhes de todas as 3 partidas anteriores
     const detalhesDasPartidas = await Promise.all(
       partidasAnteriores.map((p) =>
-        getMatchById(p.partida_id).then((res) => res)
+        getMatchById(p.partida_id, apiKey).then((res) => res)
       )
     );
 
     const proximasPartidasDetalhes = await Promise.all(
       proximasPartidas.map((p) =>
-        getMatchById(p.partida_id).then((res) => res)
+        getMatchById(p.partida_id, apiKey).then((res) => res)
       )
     );
 

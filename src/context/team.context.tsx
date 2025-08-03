@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
 
 type TeamContextType = {
-  setTeam: (team: { nome: string; escudo: string }) => void;
+  setTeam: (team: { nome: string; escudo: string } | undefined) => void;
   team: { nome: string; escudo: string } | undefined;
 };
 
@@ -17,7 +17,7 @@ export const useTeam = () => {
 };
 
 export const TeamProvider = ({ children }: { children: ReactNode }) => {
-  const [team, setTeam] = useState<{ nome: string; escudo: string }>();
+  const [team, setTeam] = useState<{ nome: string; escudo: string } | undefined>();
 
   return (
     <TeamContext.Provider value={{ team, setTeam }}>

@@ -1,13 +1,16 @@
 import axios from "axios";
 
-export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_LINK,
-});
+export const createApi = (apiKey: string | null) => {
+  const instance = axios.create({
+    baseURL: import.meta.env.VITE_API_LINK,
+  });
 
-api.interceptors.request.use((config) => {
-  const token = import.meta.env.VITE_AUTH;
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
+  instance.interceptors.request.use((config) => {
+    if (apiKey) {
+      config.headers.Authorization = `Bearer ${apiKey}`;
+    }
+    return config;
+  });
+
+  return instance;
+}

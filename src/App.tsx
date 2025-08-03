@@ -1,3 +1,4 @@
+import ApiKey from "./components/ApiKey";
 import Loading from "./components/Loading";
 import NextMatches from "./components/NextMatches";
 import PastMatches from "./components/PastMatches";
@@ -21,6 +22,7 @@ function App() {
         <h1>⚽ Futebol Brasil - EDGE</h1>
         <p>Acompanhe seus times favoritos</p>
       </header>
+      <ApiKey />
       <SelectTeam />
       {team && (
         <>
